@@ -95,7 +95,7 @@ For standard laptops, we recommend **Phi-3** (Lightweight & Fast).
 ollama pull phi3
 ```
 
-*(If you have a strong server, you can use `llama3`).*
+*(If you have a strong server, you can use `qwen2.5:14b`).*
 
 ### 4\. Data Setup
 
@@ -116,7 +116,7 @@ BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
 Open `my_brain.py` to change the model if needed:
 
 ```python
-MODEL_NAME = "phi3"  # or "llama3"
+MODEL_NAME = "phi3"  # or "qwen2.5:14b"
 ```
 
 ---
