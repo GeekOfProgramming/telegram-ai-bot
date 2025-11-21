@@ -161,4 +161,5 @@ italy-edu-bot/
 
 ## 🤝 Contributing
 
-Developed by **Hamid Lotfalian** for **Italy Education Club**.
+Developed by **Hamid Lotfalian** for **Digi Mohager**.
+
