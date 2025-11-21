@@ -1,116 +1,159 @@
-# 🤖 AI-Powered Hybrid Telegram Bot
+# 🤖 Italy Education Club - AI Assistant Bot
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi)
+![FastAPI](https://img.shields.io/badge/FastAPI-Microservice-009688?style=for-the-badge&logo=fastapi)
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-orange?style=for-the-badge)
-![Ollama](https://img.shields.io/badge/AI-Ollama%20(Local)-black?style=for-the-badge)
+![Ollama](https://img.shields.io/badge/AI-Phi3%20%2F%20Llama3-black?style=for-the-badge)
 
-A hybrid Telegram bot that seamlessly blends traditional menu-based navigation with a powerful, locally hosted AI assistant. The AI utilizes **RAG (Retrieval-Augmented Generation)** to answer specialized questions based on your custom PDF documents.
+A specialized, hybrid Telegram bot designed for **Italy Education Club**. It combines a structured menu system for common queries with a powerful, **Context-Aware AI** that answers complex student questions using a local knowledge base (PDFs, CSVs, TXTs).
 
 ---
 
-## 🌟 Features
+## 🌟 Key Features
 
-* **Hybrid Interface:**
-    * 📱 **Standard Mode:** Quick access buttons for general information (Contact, About, FAQ).
-    * 🧠 **AI Mode:** A dedicated state for chatting with the LLM.
-* **Local RAG Architecture:**
-    * Processes and embeds your private `PDF` data locally using **ChromaDB**.
-    * Uses **Ollama** (Llama3) for privacy-focused, offline inference.
-* **Microservices Design:**
-    * Separation of concerns between the Telegram Bot (Frontend) and the AI Engine (Backend API).
+* **📂 Multi-Format Knowledge Base:**
+    * Dynamically ingests data from a `knowledge_base` folder.
+    * Supports **PDF** (Guides), **CSV/Excel** (University lists), and **TXT** (Notes).
+    * Auto-detects encoding (UTF-8 / CP1252) for Persian/English compatibility.
+
+* **🧠 Smart Context & Memory:**
+    * **Conversational Memory:** Remembers previous messages (e.g., knows what "it" refers to).
+    * **Language Agnostic:** Automatically replies in the user's language (Persian 🇮🇷 or English 🇺🇸).
+
+* **📊 Analytics & Logging:**
+    * Automatically saves all User-AI interactions into `chat_history.csv` for business analysis.
+
+* **⚡ Optimized Performance:**
+    * configured to run on standard laptops using lightweight models like **Phi-3** or **Gemma**.
+    * Telemetry disabled for faster startup.
 
 ---
 
 ## 🏗️ Architecture
 
-The project follows a clean client-server architecture:
+1.  **Telegram Bot (Frontend):** Handles UI, menus, and user input.
+2.  **FastAPI (Gateway):** Manages traffic, logs data, and routes requests to the AI engine.
+3.  **AI Brain (Backend):**
+    * **ChromaDB:** Vectorizes documents for search.
+    * **Ollama:** Generates human-like answers.
+    * **Buffer Memory:** Maintains session context.
 
-1.  **User** interacts with the Telegram Bot.
-2.  **Bot (Client)** forwards AI queries to the FastAPI Server via HTTP.
-3.  **FastAPI (Server)** invokes the RAG pipeline (`my_brain.py`).
-4.  **AI Engine** retrieves context from `data.pdf` and generates a response using Ollama.
+## 🛠️ Prerequisites
 
+  * **Python 3.10+**
+  * **[Ollama](https://ollama.com/)** installed.
+  * **RAM:** Minimum 4GB (for Phi-3) or 8GB (for Llama3).
+  * A Telegram Bot Token (via @BotFather).
 
-## 🛠️ **Prerequisites**
-Before you begin, ensure you have met the following requirements:
+## 🚀 Installation & Setup
 
-    Python 3.10+ installed.
+### 1\. Setup Environment
 
-    Ollama installed and running.
+```bash
+# Clone the repo
+git clone [https://github.com/your-username/italy-edu-bot.git](https://github.com/your-username/italy-edu-bot.git)
+cd italy-edu-bot
 
-A Telegram Bot Token (from @BotFather).
+# Create Virtual Env
+python -m venv .venv
 
-## 🚀 **Installation**
+# Activate (Windows)
+.\.venv\Scripts\activate
+```
 
-**1. Clone & Setup Environment**
+### 2\. Install Dependencies
 
-    # Clone the repository
-    git clone [https://github.com/your-username/telegram-ai-bot.git](https://github.com/your-username/telegram-ai-bot.git)
+```bash
+pip install -r requirements.txt
+```
 
-    # Navigate to directory
-    cd telegram-ai-bot
+### 3\. Prepare the AI Model
 
-    # Create a virtual environment
-    python -m venv .venv
+For standard laptops, we recommend **Phi-3** (Lightweight & Fast).
 
-    # Activate environment (Windows)
-    .\.venv\Scripts\activate
-    # Activate environment (Mac/Linux)
-    source .venv/bin/activate
+```bash
+ollama pull phi3
+```
 
-**2. Install Dependencies**
+*(If you have a strong server, you can use `llama3`).*
 
-    pip install -r requirements.txt
+### 4\. Data Setup
 
-**3. Pull the AI Model**
-    We use Llama3 by default. Run this in your terminal:
+1.  Create a folder named `knowledge_base` in the root directory.
+2.  Put your files inside:
+      * `guide.pdf` (Scholarship guides)
+      * `universities.csv` (List of courses - **Save as CSV UTF-8**)
+      * `notes.txt` (Other info)
 
-      ollama pull llama3
+### 5\. Configuration
 
-**4. Configuration**
-    1. Place your custom PDF file in the root directory and rename it to data.pdf.
-    2. Open my_bot.py and replace BOT_TOKEN with your actual Telegram token.
+Open `my_bot.py` and set your token:
 
+```python
+BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+```
 
-## ▶️ **Usage Guide**
-To run the system, you need to execute the Server and the Bot in two separate terminals.
+Open `my_brain.py` to change the model if needed:
 
-**Terminal 1:** Start the AI Server
+```python
+MODEL_NAME = "phi3"  # or "llama3"
+```
 
-    # Make sure .venv is activated
-    uvicorn server:app --reload
+-----
 
-    Wait until you see: Application startup complete
+## ▶️ How to Run
 
-**Terminal 2:** Start the Telegram Bot
+You must run the **Server** and the **Bot** simultaneously in two separate terminals.
 
-    # Make sure .venv is activated
-    python my_bot.py
-    
-    Now, open your bot in Telegram and click "🤖 سوال از هوش مصنوعی" to start chatting!
+**Terminal 1: The AI Server**
 
+```bash
+# Activate venv first!
+uvicorn server:app --reload
+```
+
+*Wait until you see: `✅ هوش مصنوعی آماده است!`*
+
+**Terminal 2: The Telegram Bot**
+
+```bash
+# Activate venv first!
+python my_bot.py
+```
+
+-----
 
 ## 📂 Project Structure
-    telegram-ai-bot/
-    ├── .venv/               # Virtual Environment
-    ├── data.pdf             # Your knowledge base (PDF)
-    ├── my_bot.py            # Telegram Bot logic (Frontend)
-    ├── server.py            # FastAPI Server (Backend)
-    ├── my_brain.py          # RAG & LangChain logic
-    ├── requirements.txt     # Python dependencies
-    └── README.md            # Documentation
+
+```
+italy-edu-bot/
+├── .venv/                  # Virtual Environment
+├── knowledge_base/         # 📂 PUT YOUR DATA FILES HERE
+│   ├── guide.pdf
+│   └── list.csv
+├── chat_history.csv        # 📊 Generated logs (Don't delete)
+├── my_bot.py               # Frontend (UI & Menus)
+├── server.py               # Backend (API & Logging)
+├── my_brain.py             # Logic (RAG, Memory, LangChain)
+├── requirements.txt        # Dependencies
+└── README.md               # Documentation
+```
 
 ## 🤝 Contributing
-Developed by Hamid Lotfalian. Feel free to submit issues or pull requests.
+
+Developed by **Hamid Lotfalian** for **Italy Education Club**.
 
 ```mermaid
 graph LR
-    A[User] -- Telegram --> B(Telegram Bot)
-    B -- HTTP Request --> C{FastAPI Server}
-    C -- Context Retrieval --> D[(ChromaDB)]
-    C -- Inference --> E[Ollama / Llama3]
-    E --> C
-    C --> B
-    B --> A
-
+    User((Student)) -- Telegram --> Bot[Telegram Bot UI]
+    Bot -- Request (User ID + Text) --> Server{FastAPI Server}
+    
+    subgraph "The Brain"
+        Server --> Logger[(Chat Logs CSV)]
+        Server --> RAG[RAG Chain]
+        RAG <--> Memory[Conversation Buffer]
+        RAG <--> DB[(ChromaDB Vector Store)]
+        RAG --> Ollama[Ollama Model (Phi-3)]
+    end
+    
+    DB -.-> Files[knowledge_base Folder]
