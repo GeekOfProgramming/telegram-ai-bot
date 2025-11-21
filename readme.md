@@ -41,7 +41,7 @@ A specialized, hybrid Telegram bot designed for **Italy Education Club**. It com
 ```mermaid
 graph LR
     User((Student)) -- Telegram --> Bot[Telegram Bot UI]
-    Bot -- Request "User ID + Text" --> Server{FastAPI Server}
+    Bot -- "Request: User ID + Text" --> Server{FastAPI Server}
     
     subgraph "The Brain"
         Server --> Logger[("Chat Logs CSV")]
@@ -162,3 +162,4 @@ italy-edu-bot/
 ## 🤝 Contributing
 
 Developed by **Hamid Lotfalian** for **Italy Education Club**.
+
