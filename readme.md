@@ -45,30 +45,27 @@ A Telegram Bot Token (from @BotFather).
 
 **1. Clone & Setup Environment**
 
-    Bash
-        # Clone the repository
-        git clone [https://github.com/your-username/telegram-ai-bot.git](https://github.com/your-username/telegram-ai-bot.git)
+    # Clone the repository
+    git clone [https://github.com/your-username/telegram-ai-bot.git](https://github.com/your-username/telegram-ai-bot.git)
 
-        # Navigate to directory
-        cd telegram-ai-bot
+    # Navigate to directory
+    cd telegram-ai-bot
 
-        # Create a virtual environment
-        python -m venv .venv
+    # Create a virtual environment
+    python -m venv .venv
 
-        # Activate environment (Windows)
-        .\.venv\Scripts\activate
-        # Activate environment (Mac/Linux)
-        source .venv/bin/activate
+    # Activate environment (Windows)
+    .\.venv\Scripts\activate
+    # Activate environment (Mac/Linux)
+    source .venv/bin/activate
 
 **2. Install Dependencies**
 
-    Bash
-        pip install -r requirements.txt
+    pip install -r requirements.txt
 
 **3. Pull the AI Model**
     We use Llama3 by default. Run this in your terminal:
 
-    Bash
         ollama pull llama3
 
 **4. Configuration**
@@ -81,17 +78,15 @@ To run the system, you need to execute the Server and the Bot in two separate te
 
 **Terminal 1:** Start the AI Server
 
-    Bash
-        # Make sure .venv is activated
-        uvicorn server:app --reload
+    # Make sure .venv is activated
+    uvicorn server:app --reload
 
     Wait until you see: Application startup complete
 
 **Terminal 2:** Start the Telegram Bot
 
-    Bash
-        # Make sure .venv is activated
-        python my_bot.py
+    # Make sure .venv is activated
+    python my_bot.py
     
     Now, open your bot in Telegram and click "🤖 سوال از هوش مصنوعی" to start chatting!
 
