@@ -41,14 +41,14 @@ A specialized, hybrid Telegram bot designed for **Italy Education Club**. It com
 ```mermaid
 graph LR
     User((Student)) -- Telegram --> Bot[Telegram Bot UI]
-    Bot -- Request (User ID + Text) --> Server{FastAPI Server}
+    Bot -- Request "User ID + Text" --> Server{FastAPI Server}
     
     subgraph "The Brain"
-        Server --> Logger[(Chat Logs CSV)]
+        Server --> Logger[("Chat Logs CSV")]
         Server --> RAG[RAG Chain]
         RAG <--> Memory[Conversation Buffer]
-        RAG <--> DB[(ChromaDB Vector Store)]
-        RAG --> Ollama[Ollama Model (Phi-3)]
+        RAG <--> DB[("ChromaDB Vector Store")]
+        RAG --> Ollama["Ollama Model (Phi-3)"]
     end
     
     DB -.-> Files[knowledge_base Folder]
@@ -165,4 +165,5 @@ Developed by **Hamid Lotfalian** for **Italy Education Club**.
 
 ```
 ```
+
 
