@@ -45,7 +45,7 @@ async def query_custom_ai(user_question, user_id):
             response = await client.post(
                 AI_API_URL,
                 json={"question": user_question, "user_id": user_id},
-                timeout=300.0 
+                timeout=100.0 
             )
             if response.status_code == 200:
                 data = response.json()

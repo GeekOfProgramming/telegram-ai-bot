@@ -65,9 +65,12 @@ def initialize_ai():
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=100)
         splits = text_splitter.split_documents(docs)
 
+        print("   🔨 در حال ساخت دیتابیس جدید...")
+        
         vectorstore = Chroma.from_documents(
             documents=splits, 
             embedding=OllamaEmbeddings(model=MODEL_NAME),
+            persist_directory="./chroma_db_phi3",  
             client_settings=Settings(anonymized_telemetry=False) 
         )
         retriever = vectorstore.as_retriever()
