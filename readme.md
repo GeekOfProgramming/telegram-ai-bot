@@ -162,4 +162,3 @@ italy-edu-bot/
 ## 🤝 Contributing
 
 Developed by **Hamid Lotfalian** for **Digi Mohager**.
-

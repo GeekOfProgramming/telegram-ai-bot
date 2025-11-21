@@ -4,6 +4,7 @@ from datetime import datetime
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.responses import FileResponse
 import my_brain  # فایل مغز هوش مصنوعی
 
 # --- تنظیمات لاگ ---
@@ -77,3 +78,9 @@ async def chat_endpoint(input_data: UserInput):
     
     # 4. ارسال پاسخ
     return {"answer": ai_response}
+
+@app.get("/get-logs")
+def get_logs():
+    if os.path.exists(LOG_FILE):
+        return FileResponse(LOG_FILE, media_type='text/csv', filename=LOG_FILE)
+    return {"error": "File not found"}

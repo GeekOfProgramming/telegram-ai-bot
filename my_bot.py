@@ -1,12 +1,45 @@
 import logging
 import httpx
+import asyncio
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 
 # --- تنظیمات ---
 BOT_TOKEN = "8257891887:AAHW7KhSVsPGtDuq77BgHKtevDq8tIHyDeE"
 AI_API_URL = "http://127.0.0.1:8000/chat"
+ADMIN_ID = 123456789
 
+async def admin_get_logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    
+    # چک امنیتی: فقط اگر خودت بودی اجرا شود
+    if user_id != ADMIN_ID:
+        return # اگر غریبه بود، هیچ کاری نکن (انگار دستور وجود ندارد)
+
+    await update.message.reply_text("📥 در حال دریافت گزارش چت‌ها از سرور...")
+    
+    # دانلود فایل از سرور FastAPI
+    async with httpx.AsyncClient() as client:
+        try:
+            # آدرس دانلود فایل از سرور
+            log_url = "http://127.0.0.1:8000/get-logs"
+            response = await client.get(log_url)
+            
+            if response.status_code == 200:
+                # ذخیره موقت فایل و ارسال به تلگرام
+                with open("temp_logs.csv", "wb") as f:
+                    f.write(response.content)
+                
+                await update.message.reply_document(
+                    document=open("temp_logs.csv", "rb"),
+                    caption="📊 گزارش کامل سوالات کاربران (اکسل)"
+                )
+            else:
+                await update.message.reply_text("❌ خطا: فایل لاگ در سرور پیدا نشد.")
+        except Exception as e:
+            await update.message.reply_text(f"❌ خطا در ارتباط با سرور: {e}")
+
+# --- تنظیمات لاگ ---
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
@@ -45,7 +78,7 @@ async def query_custom_ai(user_question, user_id):
             response = await client.post(
                 AI_API_URL,
                 json={"question": user_question, "user_id": user_id},
-                timeout=100.0 
+                timeout=300.0 
             )
             if response.status_code == 200:
                 data = response.json()
@@ -137,40 +170,67 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # --- دکمه‌های بخش سوالات متداول (بدون AI) ---
     elif text == "💰 بورسیه استانی (DSU)":
-        await update.message.reply_text("✅ **بورسیه استانی:** شامل غذای رایگان، خوابگاه رایگان و سالانه حدود 7000 یورو کمک هزینه نقدی است که بر اساس عدد ایزه (ISEE) خانواده تعلق میگیره.", parse_mode="Markdown")
+        await update.message.reply_text("✅ **بورسیه استانی:** شامل ۷۰۰۰ یورو پول نقد + خوابگاه + غذا. شرط اصلی: درآمد پایین خانواده (عدد ایزه).", parse_mode="Markdown")
         return
     elif text == "📅 ددلاین دانشگاه‌ها":
-        await update.message.reply_text("⏰ **ددلاین‌ها:** اکثر دانشگاه‌ها از نوامبر/دسامبر اپلیکیشن رو باز میکنن. ددلاین تورین و میلان معمولا زودتره. برای تاریخ دقیق اسم دانشگاه رو به هوش مصنوعی بگو.", parse_mode="Markdown")
+        await update.message.reply_text("⏰ **ددلاین‌ها:** معمولا از نوامبر شروع میشه. تورین و میلان زودتر هستند.", parse_mode="Markdown")
         return
     elif text == "📄 مدارک ویزا":
-        await update.message.reply_text("🛂 **مدارک مهم ویزا:** پذیرش دانشگاه، نامه تمکن مالی، گردش حساب، اجاره‌نامه (یا رزرو هتل) و بیمه مسافرتی.", parse_mode="Markdown")
+        await update.message.reply_text("🛂 **مدارک:** پذیرش، تمکن مالی، گردش حساب، اجاره‌نامه، بیمه و بلیط پرواز.", parse_mode="Markdown")
+        return
+    elif text == "🏠 وضعیت خوابگاه":
+        await update.message.reply_text("🏠 **خوابگاه:** با بورسیه استانی خوابگاه بسیار ارزان یا رایگان میشه، ولی ظرفیت محدود است.", parse_mode="Markdown")
         return
 
     # --- مدیریت پیام در حالت AI ---
     if user_mode:
+        # نمایش وضعیت تایپینگ
         await update.message.reply_chat_action(action="typing")
         
-        # دریافت پاسخ
-        ai_response = await query_custom_ai(text, user_id)
+        # تعریف تسک برای دریافت جواب
+        ai_task = asyncio.create_task(query_custom_ai(text, user_id))
         
-        # قالب‌بندی خوشگل پاسخ
+        waiting_message = None
+        ai_response = None
+        
+        try:
+            # 5 ثانیه صبر میکنیم ببینیم جواب میاد یا نه
+            ai_response = await asyncio.wait_for(asyncio.shield(ai_task), timeout=5.0)
+        
+        except asyncio.TimeoutError:
+            # اگر بیشتر از 5 ثانیه شد، این پیام رو میفرستیم
+            waiting_message = await update.message.reply_text(
+                "⏳ **دارم دنبال بهترین جواب برات میگردم...**\nلطفا چند لحظه منتظر باش، دارم پرونده‌ها رو چک میکنم 📂",
+                parse_mode="Markdown"
+            )
+            # حالا منتظر میمانیم تا واقعا جواب بیاید (بدون محدودیت زمانی، تا سقف 300 ثانیه که در تابع تنظیم کردیم)
+            ai_response = await ai_task
+        
+        # اگر پیام "صبر کنید" فرستاده بودیم، حالا پاکش میکنیم تا چت تمیز بشه
+        if waiting_message:
+            try:
+                await context.bot.delete_message(chat_id=update.effective_chat.id, message_id=waiting_message.message_id)
+            except:
+                pass # اگر نشد پاک کنه مهم نیست
+
+        # قالب‌بندی و ارسال پاسخ نهایی
         formatted_reply = (
             f"🎓 **پاسخ مشاور:**\n\n"
             f"{ai_response}\n\n"
             f"──────────────\n"
-            f"💭 _اگر سوال دیگه‌ای داری بپرس، یا دکمه بازگشت رو بزن._"
+            f"💭 _سوال دیگه‌ای داری؟_"
         )
         await update.message.reply_text(formatted_reply, parse_mode="Markdown")
     
     else:
-        # اگر دکمه‌ای نبود و حالت AI هم نبود
-        await update.message.reply_text("⚠️ متوجه نشدم. لطفا از دکمه‌های منو استفاده کن یا گزینه «مشاوره هوشمند» رو بزن.")
-
+        await update.message.reply_text("⚠️ متوجه نشدم. لطفا از دکمه‌ها استفاده کن یا دکمه «مشاوره هوشمند» رو بزن.")
+        
 # --- اجرا ---
 if __name__ == '__main__':
     application = ApplicationBuilder().token(BOT_TOKEN).build()
     application.add_handler(CommandHandler('start', start))
     application.add_handler(MessageHandler(filters.TEXT, handle_message))
-    
+    application.add_handler(CommandHandler('logs', admin_get_logs))
+
     print("Italy Education Bot is running with New UI...")
     application.run_polling()
