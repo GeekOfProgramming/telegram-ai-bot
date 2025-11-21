@@ -31,15 +31,6 @@ The project follows a clean client-server architecture:
 3.  **FastAPI (Server)** invokes the RAG pipeline (`my_brain.py`).
 4.  **AI Engine** retrieves context from `data.pdf` and generates a response using Ollama.
 
-```mermaid
-graph LR
-    A[User] -- Telegram --> B(Telegram Bot)
-    B -- HTTP Request --> C{FastAPI Server}
-    C -- Context Retrieval --> D[(ChromaDB)]
-    C -- Inference --> E[Ollama / Llama3]
-    E --> C
-    C --> B
-    B --> A
 
 ## 🛠️ **Prerequisites**
 Before you begin, ensure you have met the following requirements:
@@ -117,3 +108,13 @@ To run the system, you need to execute the Server and the Bot in two separate te
 
 ## 🤝 Contributing
 Developed by Hamid Lotfalian. Feel free to submit issues or pull requests.
+
+```mermaid
+graph LR
+    A[User] -- Telegram --> B(Telegram Bot)
+    B -- HTTP Request --> C{FastAPI Server}
+    C -- Context Retrieval --> D[(ChromaDB)]
+    C -- Inference --> E[Ollama / Llama3]
+    E --> C
+    C --> B
+    B --> A
