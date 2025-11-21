@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Microservice-009688?style=for-the-badge&logo=fastapi)
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-orange?style=for-the-badge)
-![Ollama](https://img.shields.io/badge/AI-Phi3%20%2F%20Llama3-black?style=for-the-badge)
+![Ollama](https://img.shields.io/badge/AI-Phi3%20%2F%20Qwen2.5:14b-black?style=for-the-badge)
 
 A specialized, hybrid Telegram bot designed for **Italy Education Club**. It combines a structured menu system for common queries with a powerful, **Context-Aware AI** that answers complex student questions using a local knowledge base (PDFs, CSVs, TXTs).
 
@@ -162,3 +162,4 @@ italy-edu-bot/
 ## 🤝 Contributing
 
 Developed by **Hamid Lotfalian** for **Digi Mohager**.
+
