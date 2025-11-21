@@ -12,28 +12,28 @@ A specialized, hybrid Telegram bot designed for **Italy Education Club**. It com
 ## 🌟 Key Features
 
 * **📂 Multi-Format Knowledge Base:**
-    * Dynamically ingests data from a `knowledge_base` folder.
-    * Supports **PDF** (Guides), **CSV/Excel** (University lists), and **TXT** (Notes).
-    * Auto-detects encoding (UTF-8 / CP1252) for Persian/English compatibility.
+  * Dynamically ingests data from a `knowledge_base` folder.
+  * Supports **PDF** (Guides), **CSV/Excel** (University lists), and **TXT** (Notes).
+  * Auto-detects encoding (UTF-8 / CP1252) for Persian/English compatibility.
 
 * **🧠 Smart Context & Memory:**
-    * **Conversational Memory:** Remembers previous messages (e.g., knows what "it" refers to).
-    * **Language Agnostic:** Automatically replies in the user's language (Persian 🇮🇷 or English 🇺🇸).
+  * **Conversational Memory:** Remembers previous messages (e.g., knows what "it" refers to).
+  * **Language Agnostic:** Automatically replies in the user's language (Persian 🇮🇷 or English 🇺🇸).
 
 * **📊 Analytics & Logging:**
-    * Automatically saves all User-AI interactions into `chat_history.csv` for business analysis.
+  * Automatically saves all User-AI interactions into `chat_history.csv` for business analysis.
 
 * **⚡ Optimized Performance:**
-    * configured to run on standard laptops using lightweight models like **Phi-3** or **Gemma**.
-    * Telemetry disabled for faster startup.
+  * configured to run on standard laptops using lightweight models like **Phi-3** or **Gemma**.
+  * Telemetry disabled for faster startup.
 
 ---
 
 ## 🏗️ Architecture
 
-1.  **Telegram Bot (Frontend):** Handles UI, menus, and user input.
-2.  **FastAPI (Gateway):** Manages traffic, logs data, and routes requests to the AI engine.
-3.  **AI Brain (Backend):**
+1. **Telegram Bot (Frontend):** Handles UI, menus, and user input.
+2. **FastAPI (Gateway):** Manages traffic, logs data, and routes requests to the AI engine.
+3. **AI Brain (Backend):**
     * **ChromaDB:** Vectorizes documents for search.
     * **Ollama:** Generates human-like answers.
     * **Buffer Memory:** Maintains session context.
@@ -52,18 +52,18 @@ graph LR
     end
     
     DB -.-> Files[knowledge_base Folder]
-````
+```
 
------
+---
 
 ## 🛠️ Prerequisites
 
-  * **Python 3.10+**
-  * **[Ollama](https://ollama.com/)** installed.
-  * **RAM:** Minimum 4GB (for Phi-3) or 8GB (for Llama3).
-  * A Telegram Bot Token (via @BotFather).
+* **Python 3.10+**
+* **[Ollama](https://ollama.com/)** installed.
+* **RAM:** Minimum 4GB (for Phi-3) or 8GB (for Llama3).
+* A Telegram Bot Token (via @BotFather).
 
------
+---
 
 ## 🚀 Installation & Setup
 
@@ -99,8 +99,8 @@ ollama pull phi3
 
 ### 4\. Data Setup
 
-1.  Create a folder named `knowledge_base` in the root directory.
-2.  Put your files inside:
+1. Create a folder named `knowledge_base` in the root directory.
+2. Put your files inside:
       * `guide.pdf` (Scholarship guides)
       * `universities.csv` (List of courses - **Save as CSV UTF-8**)
       * `notes.txt` (Other info)
@@ -119,7 +119,7 @@ Open `my_brain.py` to change the model if needed:
 MODEL_NAME = "phi3"  # or "llama3"
 ```
 
------
+---
 
 ## ▶️ How to Run
 
@@ -141,7 +141,7 @@ uvicorn server:app --reload
 python my_bot.py
 ```
 
------
+---
 
 ## 📂 Project Structure
 
@@ -162,7 +162,3 @@ italy-edu-bot/
 ## 🤝 Contributing
 
 Developed by **Hamid Lotfalian** for **Italy Education Club**.
-
-```
-```
-
