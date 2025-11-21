@@ -66,7 +66,7 @@ A Telegram Bot Token (from @BotFather).
 **3. Pull the AI Model**
     We use Llama3 by default. Run this in your terminal:
 
-        ollama pull llama3
+      ollama pull llama3
 
 **4. Configuration**
     1. Place your custom PDF file in the root directory and rename it to data.pdf.
@@ -113,3 +113,4 @@ graph LR
     E --> C
     C --> B
     B --> A
+
