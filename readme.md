@@ -13,7 +13,7 @@ A specialized, hybrid Telegram bot designed for **Italy Education Club**. It com
 
 * **📂 Multi-Format Knowledge Base:**
   * Dynamically ingests data from a `knowledge_base` folder.
-  * Supports **PDF** (Guides), **CSV/Excel** (University lists), and **TXT** (Notes).
+  * Supports **JSON** and **PDF** (Guides), **CSV/Excel** (University lists), and **TXT** (Notes).
   * Auto-detects encoding (UTF-8 / CP1252) for Persian/English compatibility.
 
 * **🧠 Smart Context & Memory:**
@@ -162,4 +162,5 @@ italy-edu-bot/
 ## 🤝 Contributing
 
 Developed by **Hamid Lotfalian** for **Digi Mohager**.
+
 
