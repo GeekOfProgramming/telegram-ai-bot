@@ -1,3 +1,8 @@
+عالیه، حمید جان. این فایل `README.md` جدید دقیقاً با آخرین تغییراتی که دادیم (پشتیبانی از پوشه، فایل‌های CSV، حافظه دار شدن بات، لاگ کردن چت‌ها و مدل سبک Phi-3) هماهنگ شده است.
+
+این متن را کپی کن و جایگزین فایل قبلی کن.
+
+````markdown
 # 🤖 Italy Education Club - AI Assistant Bot
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python)
@@ -38,12 +43,32 @@ A specialized, hybrid Telegram bot designed for **Italy Education Club**. It com
     * **Ollama:** Generates human-like answers.
     * **Buffer Memory:** Maintains session context.
 
+```mermaid
+graph LR
+    User((Student)) -- Telegram --> Bot[Telegram Bot UI]
+    Bot -- Request (User ID + Text) --> Server{FastAPI Server}
+    
+    subgraph "The Brain"
+        Server --> Logger[(Chat Logs CSV)]
+        Server --> RAG[RAG Chain]
+        RAG <--> Memory[Conversation Buffer]
+        RAG <--> DB[(ChromaDB Vector Store)]
+        RAG --> Ollama[Ollama Model (Phi-3)]
+    end
+    
+    DB -.-> Files[knowledge_base Folder]
+````
+
+-----
+
 ## 🛠️ Prerequisites
 
   * **Python 3.10+**
   * **[Ollama](https://ollama.com/)** installed.
   * **RAM:** Minimum 4GB (for Phi-3) or 8GB (for Llama3).
   * A Telegram Bot Token (via @BotFather).
+
+-----
 
 ## 🚀 Installation & Setup
 
@@ -143,17 +168,5 @@ italy-edu-bot/
 
 Developed by **Hamid Lotfalian** for **Italy Education Club**.
 
-```mermaid
-graph LR
-    User((Student)) -- Telegram --> Bot[Telegram Bot UI]
-    Bot -- Request (User ID + Text) --> Server{FastAPI Server}
-    
-    subgraph "The Brain"
-        Server --> Logger[(Chat Logs CSV)]
-        Server --> RAG[RAG Chain]
-        RAG <--> Memory[Conversation Buffer]
-        RAG <--> DB[(ChromaDB Vector Store)]
-        RAG --> Ollama[Ollama Model (Phi-3)]
-    end
-    
-    DB -.-> Files[knowledge_base Folder]
+```
+```
