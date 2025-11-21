@@ -1,8 +1,3 @@
-عالیه، حمید جان. این فایل `README.md` جدید دقیقاً با آخرین تغییراتی که دادیم (پشتیبانی از پوشه، فایل‌های CSV، حافظه دار شدن بات، لاگ کردن چت‌ها و مدل سبک Phi-3) هماهنگ شده است.
-
-این متن را کپی کن و جایگزین فایل قبلی کن.
-
-````markdown
 # 🤖 Italy Education Club - AI Assistant Bot
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python)
@@ -170,3 +165,4 @@ Developed by **Hamid Lotfalian** for **Italy Education Club**.
 
 ```
 ```
+
