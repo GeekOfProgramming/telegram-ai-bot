@@ -5,7 +5,7 @@ from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 
 # --- تنظیمات ---
-BOT_TOKEN = "8257891887:AAHW7KhSVsPGtDuq77BgHKtevDq8tIHyDeE"
+BOT_TOKEN = "8257891887:AAHW7KhSVsPGtDuq77BgHKtevDq8tIHy"
 AI_API_URL = "http://127.0.0.1:8000/chat"
 ADMIN_ID = 123456789
 
@@ -233,4 +233,5 @@ if __name__ == '__main__':
     application.add_handler(CommandHandler('logs', admin_get_logs))
 
     print("Italy Education Bot is running with New UI...")
+
     application.run_polling()
